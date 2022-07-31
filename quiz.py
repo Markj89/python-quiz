@@ -1,6 +1,40 @@
-from random import random, choice, choices
+from random import choice
 import time
 import sys
+
+defaultPoint = 1
+point = 1
+ # Lets make some questions
+questions = {
+    "Where were The Lord of the Rings movies filmed?":
+    [
+        "New Zealand",
+        "Austalia",
+        "Ireland",
+        "Iceland"
+    ],
+    "Who directed the hit 2017 movie Get Out?":
+    [
+        "Jordan Peele",
+        "Steven Spielberg",
+        "Sam Raimi",
+        "George Lucas"
+    ],
+    "What’s the name of the planet Obi-Wan Kenobi and Anakin Skywalker duel on in Star Wars Episode III: Revenge of the Sith?": 
+    [
+        "Mustafar",
+        "Yavin 4",
+        "Hoth",
+        "Tatooine",
+    ],
+    "What was the highest-grossing movie of 2005?":
+    [
+        "Harry Potter and the Goblet of Fire",
+        "War of the Worlds",
+        "Star Wars: Episode III: Revenge of the Sith",
+        "The Chronicles of Narnia: The Lion, The Witch, and the Wardrobe"
+    ],
+}
 
 def sayHello():
     question = input("What is your name? ")
@@ -15,7 +49,21 @@ def sayHello():
         time.sleep(2)
         introduceMyself()
 
-        
+def addPoint(value, pointsAccumulated):
+    if (defaultPoint == point or defaultPoint > point):
+        if (value == "add"): 
+            pointsAccumulated = point + defaultPoint
+
+    return pointsAccumulated
+
+def removePoint(value, pointsAccumulated):
+    if (defaultPoint == point or defaultPoint > point):
+        if (value == "remove"): 
+            pointsAccumulated = point - defaultPoint
+
+    return pointsAccumulated
+
+
 def introduceMyself():
     print("I'm Rob bot. Now that we've introductions out of the way. lets get to got good stuff.")
     sys.stdout.flush()
@@ -37,25 +85,21 @@ def introduceMyself():
         print("Ok, well good luck")
 
 def quiz():
-    # Lets make some questions
-    questions = [
-        ("Where were The Lord of the Rings movies filmed?", "New Zealand"),
-        ("Who directed the hit 2017 movie Get Out?", "Jordan Peele"),
-        ("What’s the name of the planet Obi-Wan Kenobi and Anakin Skywalker duel on in Star Wars Episode III: Revenge of the Sith?", "Mustafar"),
-        ("What was the highest-grossing movie of 2005?", "Harry Potter and the Goblet of Fire"),
-    ]
-    for question, correct_answer in questions:
-        answer = input(f"{question} ")
+    for question, alternatives in questions.items():
+        correct_answer = alternatives[0]
+        sorted_alternatives = sorted(alternatives)
+        for label, alternative in enumerate(sorted_alternatives):
+            print(f" {label}: {alternative}")
+
+        answer_label = int(input(f"{question} "))
+        answer = sorted_alternatives[answer_label]
         if (answer == correct_answer):
             setQuip()
-            print("Next Question:")
             sys.stdout.flush()
             time.sleep(2)
         else:
             print(f"The answer is {correct_answer!r}, not {answer!r}")
-    if (len(questions) == -1):
-        print("Good job!")
-    
+        
     sys.stdout.flush()
     time.sleep(2)
     print("You are actually smart! Well here's a point. Now good, get out of here!")
@@ -68,7 +112,7 @@ def setQuip():
         "Correct!",
         "Nice one!"
     ]
-    say_quip = choices(quips)
+    say_quip = choice(quips)
     print(say_quip)
 
 
